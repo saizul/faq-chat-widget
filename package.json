@@ -15,7 +15,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "lint": "eslint .",
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "serve": "node scripts/serve.mjs",
     "check": "npm run lint && npm test && npm run build"
   },
