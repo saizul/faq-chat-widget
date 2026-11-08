@@ -1,0 +1,88 @@
+[
+  {
+    "id": "pricing",
+    "suggested": true,
+    "question": { "en": "How much does a website cost?", "bn": "একটি ওয়েবসাইট বানাতে কত খরচ হয়?" },
+    "answer": {
+      "en": "A simple business site starts from 15,000 BDT. Online shops and custom automation are quoted after a short call.",
+      "bn": "সাধারণ বিজনেস সাইট ১৫,০০০ টাকা থেকে শুরু। অনলাইন শপ ও কাস্টম অটোমেশনের দাম একটি ছোট কলের পর জানানো হয়।"
+    },
+    "keywords": ["price", "pricing", "cost", "quote", "budget", "দাম", "খরচ", "কত টাকা"],
+    "links": [{ "label": { "en": "See services", "bn": "সার্ভিস দেখুন" }, "url": "https://example.com" }]
+  },
+  {
+    "id": "timeline",
+    "suggested": true,
+    "question": { "en": "How long does a project take?", "bn": "একটি প্রজেক্ট শেষ করতে কত সময় লাগে?" },
+    "answer": {
+      "en": "Most websites are ready in 1 to 3 weeks. Automation workflows usually take 3 to 7 days.",
+      "bn": "বেশিরভাগ ওয়েবসাইট ১ থেকে ৩ সপ্তাহে তৈরি হয়। অটোমেশন ওয়ার্কফ্লো সাধারণত ৩ থেকে ৭ দিন লাগে।"
+    },
+    "keywords": ["timeline", "deadline", "duration", "delivery", "how long", "কতদিন", "ডেলিভারি", "সময় লাগে"]
+  },
+  {
+    "id": "payment",
+    "suggested": true,
+    "question": { "en": "Which payment methods do you accept?", "bn": "কোন কোন পেমেন্ট পদ্ধতি গ্রহণ করেন?" },
+    "answer": {
+      "en": "bKash, Nagad, bank transfer and international cards. 50% upfront, 50% on delivery.",
+      "bn": "বিকাশ, নগদ, ব্যাংক ট্রান্সফার এবং আন্তর্জাতিক কার্ড। ৫০% অগ্রিম, বাকি ৫০% ডেলিভারির সময়।"
+    },
+    "keywords": ["bkash", "nagad", "bank", "invoice", "advance", "বিকাশ", "নগদ", "অগ্রিম"]
+  },
+  {
+    "id": "whatsapp-automation",
+    "suggested": true,
+    "question": { "en": "Can you build WhatsApp automation?", "bn": "আপনারা কি হোয়াটসঅ্যাপ অটোমেশন বানিয়ে দেন?" },
+    "answer": {
+      "en": "Yes. Auto-replies, order notifications and lead capture using the official WhatsApp Cloud API, plus n8n workflows.",
+      "bn": "হ্যাঁ। অফিশিয়াল WhatsApp Cloud API ও n8n দিয়ে অটো-রিপ্লাই, অর্ডার নোটিফিকেশন ও লিড সংগ্রহ করা হয়।"
+    },
+    "keywords": ["whatsapp", "automation", "chatbot", "n8n", "bot", "হোয়াটসঅ্যাপ", "অটোমেশন", "চ্যাটবট"]
+  },
+  {
+    "id": "wordpress",
+    "question": { "en": "Do you work with WordPress?", "bn": "আপনারা কি ওয়ার্ডপ্রেসে কাজ করেন?" },
+    "answer": {
+      "en": "Yes: themes, WooCommerce stores, speed fixes and security clean-ups.",
+      "bn": "হ্যাঁ: থিম, WooCommerce স্টোর, স্পিড অপটিমাইজেশন ও সিকিউরিটি ক্লিন-আপ।"
+    },
+    "keywords": ["wordpress", "woocommerce", "theme", "plugin", "ওয়ার্ডপ্রেস", "প্লাগইন"]
+  },
+  {
+    "id": "support",
+    "question": { "en": "Do you provide support after launch?", "bn": "লঞ্চের পরে সাপোর্ট দেন?" },
+    "answer": {
+      "en": "Every project includes 30 days of free fixes. Monthly maintenance plans are available after that.",
+      "bn": "প্রতিটি প্রজেক্টে ৩০ দিন বিনামূল্যে ফিক্স। এরপর মাসিক মেইনটেনেন্স প্ল্যান আছে।"
+    },
+    "keywords": ["maintenance", "warranty", "bug", "fix", "after launch", "মেইনটেনেন্স", "ওয়ারেন্টি"]
+  },
+  {
+    "id": "hours",
+    "question": { "en": "What are your working hours?", "bn": "আপনাদের কাজের সময় কখন?" },
+    "answer": {
+      "en": "Sunday to Thursday, 10:00 to 18:00 (Bangladesh time). Messages are answered within one working day.",
+      "bn": "রবিবার থেকে বৃহস্পতিবার, সকাল ১০টা থেকে সন্ধ্যা ৬টা (বাংলাদেশ সময়)। এক কর্মদিবসের মধ্যে উত্তর দেওয়া হয়।"
+    },
+    "keywords": ["hours", "open", "schedule", "available", "খোলা", "কাজের সময়"]
+  },
+  {
+    "id": "contact",
+    "question": { "en": "How can I contact you?", "bn": "কীভাবে যোগাযোগ করব?" },
+    "answer": {
+      "en": "Use the \"Talk to a human\" button below to reach us on WhatsApp, or visit saizul.com.",
+      "bn": "নিচের \"মানুষের সাথে কথা বলুন\" বাটনে হোয়াটসঅ্যাপে পাবেন, অথবা saizul.com এ যান।"
+    },
+    "keywords": ["contact", "email", "phone", "reach", "যোগাযোগ", "ইমেইল", "ফোন"]
+  },
+  {
+    "id": "greeting",
+    "question": { "en": "Hello", "bn": "আসসালামু আলাইকুম" },
+    "answer": {
+      "en": "Hello! How can I help you today?",
+      "bn": "ওয়া আলাইকুম আসসালাম! আজ আপনাকে কীভাবে সাহায্য করতে পারি?"
+    },
+    "keywords": ["hi", "hey", "salam", "হ্যালো", "সালাম"]
+  }
+]

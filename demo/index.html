@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ Chat Widget demo</title>
+  <style>
+    body { font-family: system-ui, "Noto Sans Bengali", sans-serif; max-width: 720px; margin: 3rem auto; padding: 0 1rem; line-height: 1.6; color: #14212b; }
+    code { background: #eef1f3; padding: .1em .35em; border-radius: 4px; }
+    .row { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0; }
+    button { padding: .5rem .9rem; border-radius: 8px; border: 1px solid #0b7a5b; background: #fff; color: #0b7a5b; cursor: pointer; }
+    pre { background: #0f1720; color: #e6edf3; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>FAQ Chat Widget</h1>
+  <p>A zero-dependency chat bubble that answers from a local FAQ file. The sample FAQ below is for a fictional web agency (prices and policies are made up). Try English or Bangla: <em>price</em>, <em>দাম কত</em>, <em>delivry time</em> (typo), <em>বিকাশ</em>, <em>৩০ দিন</em>.</p>
+  <div class="row">
+    <button type="button" id="open">Open chat</button>
+    <button type="button" id="lang-bn">বাংলা UI</button>
+    <button type="button" id="lang-en">English UI</button>
+  </div>
+  <p>Install with one tag:</p>
+<pre>&lt;script src="faq-chat-widget.min.js" defer
+  data-faq-url="faq.json"
+  data-lang="auto"
+  data-theme="auto"
+  data-primary="#0b7a5b"
+  data-whatsapp="8801XXXXXXXXX"&gt;&lt;/script&gt;</pre>
+  <p>Source: <a href="https://github.com/saizul/faq-chat-widget">github.com/saizul/faq-chat-widget</a> by <a href="https://saizul.com">Saizul Amin</a>.</p>
+
+  <!-- data-whatsapp below is a placeholder number. data-webhook is omitted: see README for the signing proxy. -->
+  <script src="faq-chat-widget.min.js" defer
+    data-faq-url="faq.json"
+    data-lang="auto"
+    data-theme="auto"
+    data-whatsapp="8801000000000"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const api = () => window.FaqChatWidget && window.FaqChatWidget.getInstance();
+      document.getElementById("open").addEventListener("click", () => api()?.open());
+      document.getElementById("lang-bn").addEventListener("click", () => api()?.setLang("bn"));
+      document.getElementById("lang-en").addEventListener("click", () => api()?.setLang("en"));
+    });
+  </script>
+</body>
+</html>
