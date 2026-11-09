@@ -144,3 +144,14 @@ npm run build && npm run serve   # demo at http://localhost:8080
 ## License
 
 MIT (c) Saizul Amin, https://saizul.com
+
+## Install from GitHub Packages
+
+Releases are published to [GitHub Packages](https://github.com/saizul/faq-chat-widget/pkgs/npm/faq-chat-widget) as `@saizul/faq-chat-widget`:
+
+```bash
+echo "@saizul:registry=https://npm.pkg.github.com" >> .npmrc
+npm install @saizul/faq-chat-widget
+```
+
+GitHub Packages needs a personal access token with `read:packages` in your `~/.npmrc` (`//npm.pkg.github.com/:_authToken=YOUR_TOKEN`).
