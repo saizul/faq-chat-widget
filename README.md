@@ -44,6 +44,28 @@ const widget = await init({ faq: [...], lang: "bn", whatsapp: "8801XXXXXXXXX",
 widget.open(); widget.setLang("en"); widget.destroy();
 ```
 
+### Analytics events
+
+The widget does not track anything on its own. To measure usage, pass an `onEvent` callback, or listen for a DOM event; both receive the same object, `{ type, at, ...data }`:
+
+| `type` | When | Extra fields |
+| --- | --- | --- |
+| `open` / `close` | Panel opened or closed | none |
+| `question` | The visitor asked something (typed or via a chip) | `text`, `lang`, `matched` (boolean), `id` (FAQ id or `null`) |
+| `handoff` | A WhatsApp or webhook handoff was attempted | `method` (`whatsapp` or `webhook`), `ok` (boolean) |
+
+```js
+init({ faq, onEvent: (e) => gtag("event", `faq_${e.type}`, { matched: e.matched }) });
+```
+
+With the one-tag install, listen on the document instead (the event bubbles out of the Shadow DOM):
+
+```js
+document.addEventListener("faq-chat-widget:event", (e) => console.log(e.detail));
+```
+
+`question.text` is what the visitor typed, so treat it as personal data and mention it in your privacy policy if you store it. Errors thrown by your handler are caught and logged; they never break the widget.
+
 ### WordPress
 
 Upload `faq-chat-widget.min.js` and `faq.json` to `wp-content/uploads/faq-chat/`, then either paste the `<script>` tag into a header/footer snippet plugin, or copy [`wordpress/faq-chat-widget.php`](wordpress/faq-chat-widget.php) into `wp-content/mu-plugins/` and edit the WhatsApp number.
