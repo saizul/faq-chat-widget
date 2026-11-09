@@ -1,3 +1,4 @@
+import { createEmitter } from "./analytics.js";
 import { readScriptConfig, safeColor } from "./config.js";
 import { buildHandoffPayload, buildTranscript, buildWhatsAppUrl, cleanPhone, postHandoff, safeUrl } from "./handoff.js";
 import { getDir, mergeStrings, primaryLang, resolveLang, t } from "./i18n.js";
@@ -32,7 +33,8 @@ export function getInstance() {
 /**
  * Mount the widget. `config`:
  *  faq (array) or faqUrl, lang ("en"|"bn"|"auto"), theme, primary, position,
- *  whatsapp, webhook, title, greeting, open, suggestions, strings, synonyms, threshold.
+ *  whatsapp, webhook, title, greeting, open, suggestions, strings, synonyms, threshold,
+ *  onEvent (analytics callback; see README "Analytics events").
  * Returns { open, close, destroy, ask, matcher }.
  */
 export async function init(config = {}) {
@@ -65,6 +67,8 @@ export async function init(config = {}) {
   shadow.append(el("style", { text: CSS }));
   const primary = safeColor(cfg.primary);
   if (primary) host.style.setProperty("--fcw-primary", primary);
+
+  const emit = createEmitter({ onEvent: cfg.onEvent, target: host });
 
   const root = el("div", { class: "root", "data-position": cfg.position === "start" ? "start" : "end", "data-open": "false" });
   const launcher = el("button", { class: "launcher", type: "button", "aria-haspopup": "dialog", "aria-expanded": "false", "aria-controls": "panel" });
@@ -161,7 +165,9 @@ export async function init(config = {}) {
     try {
       const url = buildWhatsAppUrl(cfg.whatsapp, `${tr("whatsappIntro")}\n\n${transcript}`);
       window.open(url, "_blank", "noopener,noreferrer");
+      emit("handoff", { method: "whatsapp", ok: true });
     } catch {
+      emit("handoff", { method: "whatsapp", ok: false });
       addMessage("bot", tr("failed"));
     }
   }
@@ -185,6 +191,7 @@ export async function init(config = {}) {
       });
       const ok = await postHandoff(cfg.webhook, payload);
       f.remove();
+      emit("handoff", { method: "webhook", ok });
       addMessage("bot", ok ? tr("sent") : tr("failed"));
       if (!ok && hasWhatsapp) addChips([{ text: tr("viaWhatsapp"), run: whatsappHandoff }]);
     });
@@ -230,6 +237,7 @@ export async function init(config = {}) {
     pending = setTimeout(() => {
       typing.remove();
       const result = matcher.answer(text, { suggestions: 3 });
+      emit("question", { text, lang: uiLang, matched: Boolean(result.match), id: result.match?.id ?? null });
       if (result.match) {
         addMessage("bot", resolveText(result.match.answer, uiLang), { links: result.match.links });
         const related = matcher.entries.filter((e) => e !== result.match && result.suggestions.includes(e));
@@ -248,6 +256,7 @@ export async function init(config = {}) {
   function open() {
     if (isOpen) return;
     isOpen = true;
+    emit("open");
     root.setAttribute("data-open", "true");
     launcher.setAttribute("aria-expanded", "true");
     input.focus();
@@ -255,6 +264,7 @@ export async function init(config = {}) {
   function close() {
     if (!isOpen) return;
     isOpen = false;
+    emit("close");
     root.setAttribute("data-open", "false");
     launcher.setAttribute("aria-expanded", "false");
     launcher.focus();

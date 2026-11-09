@@ -1,3 +1,4 @@
+import { EVENT_NAME, createEmitter } from "./analytics.js";
 import { readScriptConfig } from "./config.js";
 import { buildHandoffPayload, buildTranscript, buildWhatsAppUrl } from "./handoff.js";
 import { STRINGS, t } from "./i18n.js";
@@ -6,6 +7,7 @@ import { detectLanguage, normalize, tokenize } from "./normalize.js";
 import { getInstance, init, initFromScript } from "./widget.js";
 
 export { init, initFromScript, getInstance, createMatcher, normalize, tokenize, detectLanguage, STRINGS, t };
+export { EVENT_NAME, createEmitter };
 export { buildHandoffPayload, buildTranscript, buildWhatsAppUrl, readScriptConfig };
 
 // One-tag install: <script src="faq-chat-widget.min.js" data-faq-url="faq.json" defer></script>

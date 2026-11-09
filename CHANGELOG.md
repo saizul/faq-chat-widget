@@ -2,6 +2,12 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Opt-in analytics hook: an `onEvent` callback and a bubbling `faq-chat-widget:event`
+  CustomEvent for `open`, `close`, `question` and `handoff`.
+
 ## [0.1.0] - 2026-11-08
 
 ### Added
