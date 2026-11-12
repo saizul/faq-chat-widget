@@ -11,7 +11,8 @@ function bool(v, fallback = false) {
  * @param {{dataset: Record<string,string>}} script any object with a `dataset`
  * Supported attributes: data-faq-url, data-lang (en|bn|auto), data-theme (light|dark|auto),
  * data-primary, data-position (end|start), data-whatsapp, data-webhook, data-title,
- * data-greeting, data-open, data-suggestions.
+ * data-greeting, data-open, data-suggestions, data-persist (session|local|off),
+ * data-persist-ttl (minutes).
  */
 export function readScriptConfig(script) {
   const d = script?.dataset ?? {};
@@ -26,6 +27,14 @@ export function readScriptConfig(script) {
   if (d.title) config.title = d.title;
   if (d.greeting) config.greeting = d.greeting;
   if (d.open !== undefined) config.open = bool(d.open);
+  if (d.persist !== undefined) {
+    const v = String(d.persist).trim().toLowerCase();
+    config.persist = v === "local" ? "local" : v === "session" || bool(v) ? "session" : false;
+  }
+  if (d.persistTtl !== undefined) {
+    const n = Number(d.persistTtl);
+    if (Number.isFinite(n) && n > 0) config.persistTtl = n;
+  }
   if (d.suggestions !== undefined) {
     const n = Number.parseInt(d.suggestions, 10);
     if (Number.isFinite(n) && n >= 0 && n <= 10) config.suggestions = n;
