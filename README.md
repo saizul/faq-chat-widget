@@ -34,6 +34,8 @@ Build the file yourself with `npm install && npm run build` (outputs `dist/faq-c
 | `data-title`, `data-greeting` | text | Override header title / first message. |
 | `data-open` | `true` | Start opened. |
 | `data-suggestions` | 0-10 | Number of suggested question chips. |
+| `data-persist` | `session`, `local`, `off` | Keep the conversation across page loads (off by default, see below). |
+| `data-persist-ttl` | minutes | How long a saved conversation lives after the last message (default 30). |
 
 ### Programmatic use
 
@@ -41,8 +43,29 @@ Build the file yourself with `npm install && npm run build` (outputs `dist/faq-c
 import { init } from "faq-chat-widget";
 const widget = await init({ faq: [...], lang: "bn", whatsapp: "8801XXXXXXXXX",
   strings: { en: { title: "Help desk" } }, synonyms: [["invoice", "bill", "receipt"]] });
-widget.open(); widget.setLang("en"); widget.destroy();
+widget.open(); widget.setLang("en"); widget.clearHistory(); widget.destroy();
 ```
+
+### Keeping the conversation across pages
+
+By default every page load starts a fresh chat. On multi-page sites, turn on persistence so a visitor who asks a question, clicks an answer link and lands on another page still sees the conversation (and the panel stays open, without stealing focus):
+
+```html
+<script src="faq-chat-widget.min.js" defer data-faq-url="/faq.json" data-persist="session"></script>
+```
+
+```js
+init({ faq, persist: "session", persistTtl: 30, persistKey: "faq-chat-widget:v1" });
+```
+
+- `session` uses `sessionStorage` (cleared when the tab closes); `local` uses `localStorage` (survives restarts, still subject to `persistTtl`).
+- The saved conversation expires `persistTtl` minutes (default 30, max 30 days) after the last change. Up to 50 messages are kept, each cut to 1,000 characters.
+- With persistence on, a "Start a new conversation" button appears in the header; `widget.clearHistory()` does the same from code. Earlier messages are included in a later WhatsApp or webhook handoff.
+- Stored data is validated before it is shown: unknown roles, bad timestamps and other versions are dropped, text is rendered as plain text, and answer links are looked up again from the current FAQ by id, never read from storage.
+- If storage is blocked (private mode, sandboxed iframe, full quota) the widget silently works without persistence.
+- `persistKey` lets two widgets on the same origin (for example a shop and a blog with different FAQs) keep separate histories.
+
+The conversation stays on the visitor's device, but it is personal data: mention it in your privacy policy, and prefer `session` on shared computers.
 
 ### Analytics events
 
