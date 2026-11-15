@@ -5,6 +5,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 ## [Unreleased]
 
 ### Added
+- FAQ validation: `validateFaq()` checks entries for structure, duplicate or invalid ids,
+  size limits, unsafe links, non-text keywords and missing translations, and can audit the
+  file with the matcher (duplicate questions, entries shadowed by another entry or not
+  reachable by their own question).
+- `faq-check` CLI (`bin/faq-check.mjs`, `npm run faq:check`) with `--lang`, `--strict`,
+  `--json` and `--no-audit`; CI now checks the demo FAQ.
 - Opt-in analytics hook: an `onEvent` callback and a bubbling `faq-chat-widget:event`
   CustomEvent for `open`, `close`, `question` and `handoff`.
 - Opt-in conversation persistence across page loads (`persist: "session" | "local"`,
@@ -12,6 +18,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
   language and open state, with expiry, size caps and validation of stored data; links are
   re-resolved from the FAQ by id. Adds a "Start a new conversation" header button (when
   enabled) and `widget.clearHistory()`. Falls back silently when storage is blocked.
+
+### Changed
+- The widget skips invalid FAQ entries (with a console warning) instead of failing to start;
+  it only refuses to start when no usable entry is left. Unsafe links and non-text keywords
+  are dropped at load time.
 
 ## [0.1.0] - 2026-11-08
 

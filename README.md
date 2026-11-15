@@ -110,6 +110,27 @@ Upload `faq-chat-widget.min.js` and `faq.json` to `wp-content/uploads/faq-chat/`
 
 `question`, `answer`, `keywords` and link `label` may each be a plain string or an object keyed by language. Keywords are the strongest signal; multi-word keywords count as phrases. Answers are rendered as plain text (never HTML), and only `http(s)`, `mailto` and `tel` links are allowed.
 
+### Checking a FAQ file
+
+The widget validates the FAQ when it loads. An entry that is broken (not an object, empty question or answer, duplicate or invalid `id`, text over 5,000 characters) is skipped with a console warning instead of stopping the whole widget; unsafe links (`javascript:`, `data:`, ...) and keywords that are not text are dropped. The widget refuses to start only when no usable entry is left. At most 1,000 entries, 100 keywords and 10 links per entry are used.
+
+To catch problems before deploying, run the checker on your FAQ files (for example in CI):
+
+```bash
+npx faq-check faq.json --lang en,bn          # from an install of this package
+node bin/faq-check.mjs faq.json --strict     # from a clone (npm run faq:check checks the demo)
+```
+
+Besides the load-time rules it reports missing translations (a Bangla question with no Bangla answer, or any language listed in `--lang` that an entry does not cover) and runs each entry's own questions through the matcher:
+
+| Code | Meaning |
+| --- | --- |
+| `duplicate-question` | Two entries share the same question after normalisation. |
+| `shadowed` | Asking an entry's own question returns a different entry; add distinguishing keywords. |
+| `unreachable` | Asking an entry's own question does not reach the answer threshold. |
+
+Options: `--lang en,bn` (languages every entry should cover), `--strict` (warnings also fail), `--json` (machine-readable output), `--no-audit` (skip the matcher checks). Exit status is 0 when clean, 1 on errors (or warnings with `--strict`), 2 for usage errors or unreadable/invalid JSON. The same checks are available in code as `validateFaq(faq, { audit: true, languages: ["en", "bn"] })`, which returns `{ entries, errors, warnings }`.
+
 ## How matching works
 
 1. **Normalise**: lowercase, Unicode NFKC, Bangla/Arabic-Indic/Persian digits become ASCII (`৩০` = `30`), punctuation and the danda `।` removed, zero-width characters dropped, Latin accents stripped.

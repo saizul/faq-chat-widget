@@ -10,14 +10,16 @@
   "bugs": { "url": "https://github.com/saizul/faq-chat-widget/issues" },
   "type": "module",
   "main": "./dist/faq-chat-widget.esm.js",
-  "files": ["dist", "src", "README.md", "LICENSE", "CHANGELOG.md"],
+  "bin": { "faq-check": "./bin/faq-check.mjs" },
+  "files": ["dist", "src", "bin", "README.md", "LICENSE", "CHANGELOG.md"],
   "engines": { "node": ">=22" },
   "scripts": {
     "build": "node scripts/build.mjs",
     "lint": "eslint .",
     "test": "node --test test/*.test.js",
     "serve": "node scripts/serve.mjs",
-    "check": "npm run lint && npm test && npm run build"
+    "faq:check": "node bin/faq-check.mjs demo/faq.json --lang en,bn --strict",
+    "check": "npm run lint && npm test && npm run faq:check && npm run build"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
