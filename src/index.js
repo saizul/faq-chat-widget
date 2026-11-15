@@ -5,12 +5,14 @@ import { STRINGS, t } from "./i18n.js";
 import { createMatcher } from "./matcher.js";
 import { detectLanguage, normalize, tokenize } from "./normalize.js";
 import { createHistoryStore, pickStorage, STORAGE_KEY } from "./persist.js";
+import { extractFaq, LIMITS, validateFaq } from "./validate.js";
 import { getInstance, init, initFromScript } from "./widget.js";
 
 export { init, initFromScript, getInstance, createMatcher, normalize, tokenize, detectLanguage, STRINGS, t };
 export { EVENT_NAME, createEmitter };
 export { buildHandoffPayload, buildTranscript, buildWhatsAppUrl, readScriptConfig };
 export { createHistoryStore, pickStorage, STORAGE_KEY };
+export { validateFaq, extractFaq, LIMITS };
 
 // One-tag install: <script src="faq-chat-widget.min.js" data-faq-url="faq.json" defer></script>
 if (typeof document !== "undefined" && document.currentScript) {

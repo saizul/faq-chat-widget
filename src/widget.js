@@ -6,6 +6,7 @@ import { createMatcher, resolveText } from "./matcher.js";
 import { detectLanguage } from "./normalize.js";
 import { createHistoryStore, pickStorage, resolvePersist } from "./persist.js";
 import { CSS } from "./styles.js";
+import { extractFaq, validateFaq } from "./validate.js";
 
 const SVG_CHAT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>';
 const SVG_RESTART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>';
@@ -49,12 +50,20 @@ export async function init(config = {}) {
   if (!faq && cfg.faqUrl) {
     const res = await fetch(cfg.faqUrl, { credentials: "omit" });
     if (!res.ok) throw new Error(`Could not load FAQ (${res.status})`);
-    const json = await res.json();
-    faq = Array.isArray(json) ? json : json.faq;
+    faq = extractFaq(await res.json());
   }
   if (!Array.isArray(faq)) throw new Error("Provide `faq` (array) or `faqUrl`");
 
-  const matcher = createMatcher(faq, { synonyms: cfg.synonyms, threshold: cfg.threshold });
+  // One broken entry should not take the whole widget down: drop it and say why.
+  const checked = validateFaq(faq);
+  const notable = [...checked.errors, ...checked.warnings.filter((x) => x.code !== "missing-translation")];
+  if (notable.length) {
+    const lines = notable.map((x) => `${x.code}: ${x.message}`);
+    console.warn(`[faq-chat-widget] FAQ issues (run bin/faq-check.mjs for details):\n${lines.join("\n")}`);
+  }
+  if (checked.entries.length === 0) throw new Error("FAQ has no usable entries");
+
+  const matcher = createMatcher(checked.entries, { synonyms: cfg.synonyms, threshold: cfg.threshold });
   const strings = mergeStrings(cfg.strings);
   const available = Object.keys(strings);
 
